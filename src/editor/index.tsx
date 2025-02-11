@@ -4,7 +4,9 @@ import 'allotment/dist/style.css';
 export default function ReactPlayground() {
   return (
     <div className='h-[100vh] flex flex-col'>
-      <div className=''>Header</div>
+      <div className='h-[60px] flex items-center border-b-[1px] border-[#000]'>
+        Header
+      </div>
       <Allotment>
         <Allotment.Pane preferredSize={240} maxSize={300} minSize={200}>
           Materail
