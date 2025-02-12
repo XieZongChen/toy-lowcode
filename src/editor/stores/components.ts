@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+/**
+ * low code json 项，整个 json 是由一个个项组成的树形结构
+ */
 export interface Component {
   id: number;
   name: string;
@@ -18,7 +21,7 @@ interface Action {
   updateComponentProps: (componentId: number, props: any) => void;
 }
 
-export const useComponetsStore = create<State & Action>((set, get) => ({
+export const useComponentsStore = create<State & Action>((set, get) => ({
   components: [
     {
       id: 1,
@@ -27,6 +30,13 @@ export const useComponetsStore = create<State & Action>((set, get) => ({
       desc: '页面',
     },
   ],
+  /**
+   * 在一个 parentId 下新增一个 component
+   * - 未传 parentId 或没查到 parentComponent 则会将 component 添加到根
+   * @param component
+   * @param parentId
+   * @returns
+   */
   addComponent: (component, parentId) =>
     set((state) => {
       if (parentId) {
@@ -45,6 +55,11 @@ export const useComponetsStore = create<State & Action>((set, get) => ({
       }
       return { components: [...state.components, component] };
     }),
+  /**
+   * 删除一个 component
+   * @param componentId
+   * @returns
+   */
   deleteComponent: (componentId) => {
     if (!componentId) return;
 
@@ -64,6 +79,12 @@ export const useComponetsStore = create<State & Action>((set, get) => ({
       }
     }
   },
+  /**
+   * 修改一个 component 的 props
+   * @param componentId
+   * @param props
+   * @returns
+   */
   updateComponentProps: (componentId, props) =>
     set((state) => {
       const component = getComponentById(componentId, state.components);
@@ -77,6 +98,12 @@ export const useComponetsStore = create<State & Action>((set, get) => ({
     }),
 }));
 
+/**
+ * 找到 components 中 id 的父级 component
+ * @param id
+ * @param components
+ * @returns
+ */
 export function getComponentById(
   id: number | null,
   components: Component[]
@@ -86,6 +113,7 @@ export function getComponentById(
   for (const component of components) {
     if (component.id == id) return component;
     if (component.children && component.children.length > 0) {
+      // 递归遍历整个树
       const result = getComponentById(id, component.children);
       if (result !== null) return result;
     }
