@@ -18,6 +18,8 @@ export function EditArea() {
         config.component,
         {
           key: component.id,
+          id: component.id,
+          name: component.name,
           ...config.defaultProps,
           ...component.props,
         },
