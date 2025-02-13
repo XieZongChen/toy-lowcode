@@ -9,9 +9,14 @@ function Page({ id, name, children }: CommonComponentProps) {
 
   const [{ canDrop }, drop] = useDrop(() => ({
     accept: ['Button', 'Container'],
-    drop: (item: { type: string }) => {
-      const props = componentConfig[item.type].defaultProps;
+    drop: (item: { type: string }, monitor) => {
+      const didDrop = monitor.didDrop();
+      if (didDrop) {
+        // 防止组件嵌套的情况下重复触发 drop 事件
+        return;
+      }
 
+      const props = componentConfig[item.type].defaultProps;
       addComponent(
         {
           id: new Date().getTime(),
