@@ -60,10 +60,12 @@ export function EditArea() {
       {renderComponents(components)}
       {hoverComponentId && (
         <HoverMask
+          portalWrapperClassName='portal-wrapper'
           containerClassName='edit-area'
           componentId={hoverComponentId}
         />
       )}
+      <div className='portal-wrapper'></div>
     </div>
   );
 }

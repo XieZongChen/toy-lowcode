@@ -6,11 +6,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface HoverMaskProps {
+  portalWrapperClassName: string; // portal 挂载节点的 className
   containerClassName: string; // 画布区的根元素的 className
   componentId: number; // hover 的组件 id
 }
 
-function HoverMask({ containerClassName, componentId }: HoverMaskProps) {
+function HoverMask({
+  portalWrapperClassName,
+  containerClassName,
+  componentId,
+}: HoverMaskProps) {
   const [position, setPosition] = useState({
     left: 0,
     top: 0,
@@ -60,14 +65,13 @@ function HoverMask({ containerClassName, componentId }: HoverMaskProps) {
     });
   }
 
-  // 创建一个 div 挂载在容器下，用于存放 portal
+  /**
+   * 由于使用时只要 hoverComponentId 有变化，就会卸载之前的 HoverMask 并创建一个新的
+   * 所以 el 逻辑会执行多次，如果在本组件内部创建存放 Portal 的 Wrapper，会创建多个 Wrapper 从而导致性能不好
+   * 固从外部创建一个 Wrapper 以解决此问题
+   */
   const el = useMemo(() => {
-    const el = document.createElement('div');
-    el.className = `wrapper`;
-
-    const container = document.querySelector(`.${containerClassName}`);
-    container!.appendChild(el);
-    return el;
+    return document.querySelector(`.${portalWrapperClassName}`)!;
   }, []);
 
   // 当前组件信息
