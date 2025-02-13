@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { Component, useComponentsStore } from '../stores/components';
 import { useComponentConfigStore } from '../stores/component-config';
 
@@ -29,8 +29,28 @@ export function EditArea() {
     });
   }
 
+  const [hoverComponentId, setHoverComponentId] = useState<number>();
+
+  const handleMouseOver: MouseEventHandler = (e) => {
+    // composedPath 是从触发事件的元素到 html 根元素的路径
+    // 使用 nativeEvent 而不是直接使用 e.composedPath 是因为后者是合成事件，有的原生事件的属性它没有
+    const path = e.nativeEvent.composedPath();
+
+    // 沿 path 向上查找
+    for (let i = 0; i < path.length; i += 1) {
+      const ele = path[i] as HTMLElement;
+
+      // 找到第一个有 data-component-id 的元素，就是当前鼠标 hover 的组件
+      const componentId = ele.dataset?.componentId;
+      if (componentId) {
+        setHoverComponentId(+componentId);
+        return;
+      }
+    }
+  };
+
   return (
-    <div className='h-[100%]'>
+    <div className='h-[100%] edit-area' onMouseOver={handleMouseOver}>
       {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
       {renderComponents(components)}
     </div>
