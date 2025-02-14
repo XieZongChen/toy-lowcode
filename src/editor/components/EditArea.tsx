@@ -75,7 +75,7 @@ export function EditArea() {
     >
       {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
       {renderComponents(components)}
-      {hoverComponentId && (
+      {hoverComponentId && hoverComponentId !== curComponentId && (
         <HoverMask
           portalWrapperClassName='portal-wrapper'
           containerClassName='edit-area'
