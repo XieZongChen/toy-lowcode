@@ -13,12 +13,15 @@ export interface Component {
 
 interface State {
   components: Component[];
+  curComponentId?: number | null; // 选中的组件 id
+  curComponent: Component | null; // 选中的组件
 }
 
 interface Action {
   addComponent: (component: Component, parentId?: number) => void;
   deleteComponent: (componentId: number) => void;
   updateComponentProps: (componentId: number, props: any) => void;
+  setCurComponentId: (componentId: number | null) => void;
 }
 
 export const useComponentsStore = create<State & Action>((set, get) => ({
@@ -30,6 +33,14 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
       desc: '页面',
     },
   ],
+  curComponentId: null,
+  curComponent: null,
+  setCurComponentId: (componentId) =>
+    set((state) => ({
+      curComponentId: componentId,
+      curComponent: getComponentById(componentId, state.components),
+    })),
+
   /**
    * 在一个 parentId 下新增一个 component
    * - 未传 parentId 或没查到 parentComponent 则会将 component 添加到根
