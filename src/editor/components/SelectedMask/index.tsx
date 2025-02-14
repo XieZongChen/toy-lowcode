@@ -24,7 +24,8 @@ function SelectedMask({
     labelLeft: 0,
   });
 
-  const { components, curComponentId } = useComponentsStore();
+  const { components, curComponentId, deleteComponent, setCurComponentId } =
+    useComponentsStore();
 
   useEffect(() => {
     updatePosition();
@@ -68,7 +69,10 @@ function SelectedMask({
     return getComponentById(componentId, components);
   }, [componentId]);
 
-  function handleDelete() {}
+  function handleDelete() {
+    deleteComponent(curComponentId!);
+    setCurComponentId(null);
+  }
 
   return createPortal(
     <>
