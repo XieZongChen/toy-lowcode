@@ -2,6 +2,7 @@ import React, { MouseEventHandler, useState } from 'react';
 import { Component, useComponentsStore } from '../stores/components';
 import { useComponentConfigStore } from '../stores/component-config';
 import HoverMask from './HoverMask';
+import SelectedMask from './SelectedMask';
 
 export function EditArea() {
   const { components, curComponentId, setCurComponentId } =
@@ -79,6 +80,13 @@ export function EditArea() {
           portalWrapperClassName='portal-wrapper'
           containerClassName='edit-area'
           componentId={hoverComponentId}
+        />
+      )}
+      {curComponentId && (
+        <SelectedMask
+          portalWrapperClassName='portal-wrapper'
+          containerClassName='edit-area'
+          componentId={curComponentId}
         />
       )}
       <div className='portal-wrapper'></div>
