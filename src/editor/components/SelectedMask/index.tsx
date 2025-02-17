@@ -129,7 +129,7 @@ function SelectedMask({
             menu={{
               items: parentComponents.map((item) => ({
                 key: item.id,
-                label: item.name,
+                label: item.desc,
               })),
               onClick: ({ key }) => {
                 setCurComponentId(+key);
@@ -147,7 +147,7 @@ function SelectedMask({
                 whiteSpace: 'nowrap',
               }}
             >
-              {curSelectedComponent?.name}
+              {curSelectedComponent?.desc}
             </div>
           </Dropdown>
           {/* 如果 id 不为 1，说明不是 Page 组件，显示删除按钮 */}

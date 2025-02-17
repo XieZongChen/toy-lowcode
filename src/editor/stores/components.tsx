@@ -7,6 +7,7 @@ export interface Component {
   id: number;
   name: string;
   props: any;
+  desc: string;
   children?: Component[];
   parentId?: number;
 }
