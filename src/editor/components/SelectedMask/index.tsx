@@ -36,6 +36,10 @@ function SelectedMask({
     updatePosition();
   }, [componentId]);
 
+  useEffect(() => {
+    updatePosition();
+  }, [components]);
+
   function updatePosition() {
     if (!componentId) return;
 
