@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { getComponentById, useComponentsStore } from '../../stores/components';
-import { Popconfirm, Space } from 'antd';
+import { Dropdown, Popconfirm, Space } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 interface SelectedMaskProps {
@@ -24,8 +24,13 @@ function SelectedMask({
     labelLeft: 0,
   });
 
-  const { components, curComponentId, deleteComponent, setCurComponentId } =
-    useComponentsStore();
+  const {
+    components,
+    curComponentId,
+    curComponent,
+    deleteComponent,
+    setCurComponentId,
+  } = useComponentsStore();
 
   useEffect(() => {
     updatePosition();
@@ -65,7 +70,7 @@ function SelectedMask({
     return document.querySelector(`.${portalWrapperClassName}`)!;
   }, []);
 
-  const curComponent = useMemo(() => {
+  const curSelectedComponent = useMemo(() => {
     return getComponentById(componentId, components);
   }, [componentId]);
 
@@ -73,6 +78,19 @@ function SelectedMask({
     deleteComponent(curComponentId!);
     setCurComponentId(null);
   }
+
+  const parentComponents = useMemo(() => {
+    const parentComponents = [];
+    let component = curComponent;
+
+    while (component?.parentId) {
+      // 向上遍历，直到找不到父级，将每个遍历出的父级都放到数组
+      component = getComponentById(component.parentId, components)!;
+      parentComponents.push(component);
+    }
+
+    return parentComponents;
+  }, [curComponent]);
 
   return createPortal(
     <>
@@ -103,18 +121,31 @@ function SelectedMask({
         }}
       >
         <Space>
-          <div
-            style={{
-              padding: '0 8px',
-              backgroundColor: 'blue',
-              borderRadius: 4,
-              color: '#fff',
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
+          <Dropdown
+            menu={{
+              items: parentComponents.map((item) => ({
+                key: item.id,
+                label: item.name,
+              })),
+              onClick: ({ key }) => {
+                setCurComponentId(+key);
+              },
             }}
+            disabled={parentComponents.length === 0}
           >
-            {curComponent?.name}
-          </div>
+            <div
+              style={{
+                padding: '0 8px',
+                backgroundColor: 'blue',
+                borderRadius: 4,
+                color: '#fff',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {curSelectedComponent?.name}
+            </div>
+          </Dropdown>
           {/* 如果 id 不为 1，说明不是 Page 组件，显示删除按钮 */}
           {curComponentId !== 1 && (
             <div style={{ padding: '0 8px', backgroundColor: 'blue' }}>
