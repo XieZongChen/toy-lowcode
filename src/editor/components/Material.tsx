@@ -6,7 +6,10 @@ export function Material() {
   const { componentConfig } = useComponentConfigStore();
 
   const components = useMemo(() => {
-    return Object.values(componentConfig);
+    return Object.values(componentConfig).filter(
+      // 内部组件不展示
+      (item) => item.name !== 'Page'
+    );
   }, [componentConfig]);
 
   return (
