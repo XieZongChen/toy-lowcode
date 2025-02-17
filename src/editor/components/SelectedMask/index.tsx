@@ -41,12 +41,14 @@ function SelectedMask({
   }, [components]);
 
   useEffect(() => {
-    const resizeHandler = () => {
+    const resizeObserver = new ResizeObserver(() => {
       updatePosition();
-    };
-    window.addEventListener('resize', resizeHandler);
+    });
+    const container = document.querySelector(`.${containerClassName}`);
+    if (!container) return;
+    resizeObserver.observe(container);
     return () => {
-      window.removeEventListener('resize', resizeHandler);
+      resizeObserver.unobserve(container);
     };
   }, []);
 
