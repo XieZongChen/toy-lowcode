@@ -40,6 +40,16 @@ function SelectedMask({
     updatePosition();
   }, [components]);
 
+  useEffect(() => {
+    const resizeHandler = () => {
+      updatePosition();
+    };
+    window.addEventListener('resize', resizeHandler);
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, []);
+
   function updatePosition() {
     if (!componentId) return;
 
