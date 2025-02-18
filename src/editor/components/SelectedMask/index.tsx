@@ -41,6 +41,7 @@ function SelectedMask({
   }, [components]);
 
   useEffect(() => {
+    // 用 ResizeObserver 监听 containerClassName 可同时处理页面大小改变和内部面板大小改变两种情况
     const resizeObserver = new ResizeObserver(() => {
       updatePosition();
     });
