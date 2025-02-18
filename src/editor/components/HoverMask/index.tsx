@@ -61,7 +61,7 @@ function HoverMask({
     // 因为 boundingClientRect 只是可视区的距离，所以算绝对定位的位置需要加上已滚动的距离
     setPosition({
       top: top - containerTop + container.scrollTop,
-      left: left - containerLeft + container.scrollTop,
+      left: left - containerLeft + container.scrollLeft,
       width,
       height,
       labelTop,

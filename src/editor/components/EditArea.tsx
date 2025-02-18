@@ -35,19 +35,14 @@ export function EditArea() {
   const [hoverComponentId, setHoverComponentId] = useState<number>();
 
   const handleMouseOver: MouseEventHandler = (e) => {
-    // composedPath 是从触发事件的元素到 html 根元素的路径
-    // 使用 nativeEvent 而不是直接使用 e.composedPath 是因为后者是合成事件，有的原生事件的属性它没有
-    const path = e.nativeEvent.composedPath();
-
-    // 沿 path 向上查找
-    for (let i = 0; i < path.length; i += 1) {
-      const ele = path[i] as HTMLElement;
-
-      // 找到第一个有 data-component-id 的元素，就是当前鼠标 hover 的组件
-      const componentId = ele.dataset?.componentId;
+    // 获取带有 data-component-id 属性的最近的祖先元素
+    const target = (e.target as HTMLElement).closest('[data-component-id]');
+    if (target) {
+      // 如果存在，则取到 data-component-id 属性的值
+      const componentId = target.getAttribute('data-component-id');
       if (componentId) {
-        setHoverComponentId(+componentId);
-        return;
+        // 如果有值，则转化为 Number 后设置到 hover id 内
+        setHoverComponentId(Number(componentId));
       }
     }
   };
