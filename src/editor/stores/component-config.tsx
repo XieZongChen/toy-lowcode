@@ -3,11 +3,22 @@ import Container from '../materials/Container';
 import Button from '../materials/Button';
 import Page from '../materials/Page';
 
+/**
+ * 组件属性设置
+ */
+export interface ComponentSetter {
+  name: string;
+  label: string;
+  type: string;
+  [key: string]: any;
+}
+
 export interface ComponentConfig {
   name: string;
   defaultProps: Record<string, any>; // 组件默认参数
   component: any; // 组件实例
   desc: string; // 组件描述
+  setter: ComponentSetter[];
 }
 
 interface State {
