@@ -18,7 +18,7 @@ export interface ComponentConfig {
   defaultProps: Record<string, any>; // 组件默认参数
   component: any; // 组件实例
   desc: string; // 组件描述
-  setter: ComponentSetter[];
+  setter?: ComponentSetter[];
 }
 
 interface State {
@@ -46,6 +46,23 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       },
       component: Button,
       desc: '按钮',
+      setter: [
+        {
+          name: 'type', // 字段名
+          label: '按钮类型', // 表单文案
+          type: 'select', // 表单类型
+          options: [
+            // 表单类型的配置项
+            { label: '主按钮', value: 'primary' },
+            { label: '次按钮', value: 'default' },
+          ],
+        },
+        {
+          name: 'text',
+          label: '文本',
+          type: 'input',
+        },
+      ],
     },
     Page: {
       name: 'Page',
