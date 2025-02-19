@@ -1,5 +1,5 @@
 import { Form, Input, InputNumber, Select } from 'antd';
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, useEffect } from 'react';
 import { debounce } from 'lodash-es';
 import styleToObject from 'style-to-object';
 import { useComponentsStore } from '@/editor/stores/components';
@@ -17,6 +17,8 @@ export function ComponentStyle() {
   const { componentConfig } = useComponentConfigStore();
 
   useEffect(() => {
+    form.resetFields();
+
     const data = form.getFieldsValue();
     form.setFieldsValue({ ...data, ...curComponent?.styles });
   }, [curComponent]);
