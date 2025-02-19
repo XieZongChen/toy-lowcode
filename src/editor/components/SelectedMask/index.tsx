@@ -37,7 +37,12 @@ function SelectedMask({
   }, [componentId]);
 
   useEffect(() => {
-    updatePosition();
+    // 当样式改变的时候，编辑框的大小不会跟着改变
+    // 这是因为 components 变了，到渲染完成，然后再 getBoundingClientRect 拿到改变后的宽高是有一段时间的
+    // 所以这里需要加延时确保能拿到最新的宽高
+    setTimeout(() => {
+      updatePosition();
+    }, 200);
   }, [components]);
 
   useEffect(() => {
