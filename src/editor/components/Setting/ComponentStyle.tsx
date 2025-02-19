@@ -1,10 +1,13 @@
 import { Form, Input, InputNumber, Select } from 'antd';
-import { CSSProperties, useEffect } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
+import { debounce } from 'lodash-es';
+import styleToObject from 'style-to-object';
 import { useComponentsStore } from '@/editor/stores/components';
 import {
   ComponentSetter,
   useComponentConfigStore,
 } from '@/editor/stores/component-config';
+import CssEditor from './CssEditor';
 
 export function ComponentStyle() {
   const [form] = Form.useForm();
@@ -12,6 +15,7 @@ export function ComponentStyle() {
   const { curComponentId, curComponent, updateComponentStyles } =
     useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
+  const [css, setCss] = useState<string>(`.comp{\n\n}`);
 
   useEffect(() => {
     const data = form.getFieldsValue();
@@ -38,6 +42,30 @@ export function ComponentStyle() {
     }
   }
 
+  const handleEditorChange = debounce((value) => {
+    setCss(value);
+
+    const css: Record<string, any> = {};
+
+    try {
+      const cssStr = value
+        .replace(/\/\*.*\*\//, '') // 去掉注释 /** */
+        .replace(/(\.?[^{]+{)/, '') // 去掉 .comp {
+        .replace('}', ''); // 去掉 }
+
+      styleToObject(cssStr, (name, value) => {
+        css[
+          name.replace(/-\w/, (item) => item.toUpperCase().replace('-', ''))
+        ] = value;
+      });
+
+      console.log(css);
+      updateComponentStyles(curComponentId, css);
+    } catch (e) {
+      console.error(e);
+    }
+  }, 500);
+
   return (
     <Form
       form={form}
@@ -50,6 +78,9 @@ export function ComponentStyle() {
           {renderFormElement(setter)}
         </Form.Item>
       ))}
+      <div className='h-[200px] border-[1px] border-[#ccc]'>
+        <CssEditor value={`.comp{\n\n}`} onChange={handleEditorChange} />
+      </div>
     </Form>
   );
 }
