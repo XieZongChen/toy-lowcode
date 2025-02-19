@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber, Select } from 'antd';
 import { CSSProperties, useEffect, useState } from 'react';
-import { debounce } from 'lodash-es';
+import { debounce, kebabCase } from 'lodash-es';
 import styleToObject from 'style-to-object';
 import { useComponentsStore } from '@/editor/stores/components';
 import {
@@ -40,7 +40,7 @@ export function ComponentStyle() {
         value += 'px';
       }
 
-      str += `\t${key}: ${value};\n`;
+      str += `\t${kebabCase(key)}: ${value};\n`;
     }
     str += `}`;
     return str;
