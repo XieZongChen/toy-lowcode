@@ -25,7 +25,11 @@ interface Action {
   deleteComponent: (componentId: number) => void;
   updateComponentProps: (componentId: number, props: any) => void;
   setCurComponentId: (componentId: number | null) => void;
-  updateComponentStyles: (componentId: number, styles: CSSProperties) => void;
+  updateComponentStyles: (
+    componentId: number,
+    styles: CSSProperties,
+    replace?: boolean
+  ) => void;
 }
 
 export const useComponentsStore = create<State & Action>((set, get) => ({
@@ -117,11 +121,13 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
    * @param styles
    * @returns
    */
-  updateComponentStyles: (componentId, styles) =>
+  updateComponentStyles: (componentId, styles, replace) =>
     set((state) => {
       const component = getComponentById(componentId, state.components);
       if (component) {
-        component.styles = { ...component.styles, ...styles };
+        component.styles = replace
+          ? { ...styles }
+          : { ...component.styles, ...styles };
 
         return { components: [...state.components] };
       }

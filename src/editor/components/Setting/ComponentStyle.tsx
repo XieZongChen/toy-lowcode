@@ -15,7 +15,6 @@ export function ComponentStyle() {
   const { curComponentId, curComponent, updateComponentStyles } =
     useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
-  const [css, setCss] = useState<string>(`.comp{\n\n}`);
 
   useEffect(() => {
     const data = form.getFieldsValue();
@@ -43,8 +42,6 @@ export function ComponentStyle() {
   }
 
   const handleEditorChange = debounce((value) => {
-    setCss(value);
-
     const css: Record<string, any> = {};
 
     try {
@@ -59,8 +56,11 @@ export function ComponentStyle() {
         ] = value;
       });
 
-      console.log(css);
-      updateComponentStyles(curComponentId, css);
+      updateComponentStyles(
+        curComponentId,
+        { ...form.getFieldsValue(), ...css },
+        true
+      );
     } catch (e) {
       console.error(e);
     }
