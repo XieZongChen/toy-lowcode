@@ -1,5 +1,5 @@
 import { Form, Input, InputNumber, Select } from 'antd';
-import { CSSProperties, useEffect } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { debounce } from 'lodash-es';
 import styleToObject from 'style-to-object';
 import { useComponentsStore } from '@/editor/stores/components';
@@ -15,13 +15,36 @@ export function ComponentStyle() {
   const { curComponentId, curComponent, updateComponentStyles } =
     useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
+  const [css, setCss] = useState<string>(`.comp{\n\n}`);
 
   useEffect(() => {
     form.resetFields();
 
     const data = form.getFieldsValue();
     form.setFieldsValue({ ...data, ...curComponent?.styles });
+
+    setCss(toCSSStr(curComponent?.styles || {}));
   }, [curComponent]);
+
+  function toCSSStr(css: Record<string, any>) {
+    let str = `.comp {\n`;
+    for (const key in css) {
+      let value = css[key];
+      if (!value) {
+        continue;
+      }
+      if (
+        ['width', 'height'].includes(key) &&
+        !value.toString().endsWith('px')
+      ) {
+        value += 'px';
+      }
+
+      str += `\t${key}: ${value};\n`;
+    }
+    str += `}`;
+    return str;
+  }
 
   if (!curComponentId || !curComponent) return null;
 
@@ -44,6 +67,7 @@ export function ComponentStyle() {
   }
 
   const handleEditorChange = debounce((value) => {
+    setCss(value);
     const css: Record<string, any> = {};
 
     try {
@@ -81,7 +105,7 @@ export function ComponentStyle() {
         </Form.Item>
       ))}
       <div className='h-[200px] border-[1px] border-[#ccc]'>
-        <CssEditor value={`.comp{\n\n}`} onChange={handleEditorChange} />
+        <CssEditor value={css} onChange={handleEditorChange} />
       </div>
     </Form>
   );
