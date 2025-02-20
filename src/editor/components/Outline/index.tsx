@@ -11,7 +11,7 @@ export function Outline() {
       showLine
       defaultExpandAll
       onSelect={([selectedKey]) => {
-        // 选中时切换 CurComponentId 保证和页面中间区域联动
+        // 选中时切换 CurComponentId 保证和画布区域联动
         setCurComponentId(selectedKey as number);
       }}
     />

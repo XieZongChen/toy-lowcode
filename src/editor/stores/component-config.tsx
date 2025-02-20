@@ -20,6 +20,8 @@ export interface ComponentConfig {
   desc: string; // 组件描述
   setter?: ComponentSetter[];
   stylesSetter?: ComponentSetter[];
+  dev: any;
+  prod: any;
 }
 
 interface State {
