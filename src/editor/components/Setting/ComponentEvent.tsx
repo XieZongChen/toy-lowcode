@@ -1,6 +1,7 @@
 import { Collapse, Input, Select, CollapseProps } from 'antd';
 import { useComponentConfigStore } from '@/editor/stores/component-config';
 import { useComponentsStore } from '@/editor/stores/components';
+import { GoToLink } from './actions/GoToLink';
 
 export function ComponentEvent() {
   const { curComponentId, curComponent, updateComponentProps } =
@@ -49,19 +50,7 @@ export function ComponentEvent() {
             />
           </div>
           {curComponent?.props?.[event.name]?.type === 'goToLink' && (
-            <div className='mt-[10px]'>
-              <div className='flex items-center gap-[10px]'>
-                <div>链接</div>
-                <div>
-                  <Input
-                    onChange={(e) => {
-                      urlChange(event.name, e.target.value);
-                    }}
-                    value={curComponent?.props?.[event.name]?.url}
-                  />
-                </div>
-              </div>
-            </div>
+            <GoToLink event={event} />
           )}
         </div>
       ),
