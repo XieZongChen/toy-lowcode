@@ -16,6 +16,7 @@ export interface Component {
 
 interface State {
   components: Component[];
+  mode: 'edit' | 'preview'; // 画布区域状态
   curComponentId?: number | null; // 选中的组件 id
   curComponent: Component | null; // 选中的组件
 }
@@ -30,6 +31,7 @@ interface Action {
     styles: CSSProperties,
     replace?: boolean
   ) => void;
+  setMode: (mode: State['mode']) => void;
 }
 
 export const useComponentsStore = create<State & Action>((set, get) => ({
@@ -48,7 +50,8 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
       curComponentId: componentId,
       curComponent: getComponentById(componentId, state.components),
     })),
-
+  mode: 'edit',
+  setMode: (mode) => set({ mode }),
   /**
    * 在一个 parentId 下新增一个 component
    * - 未传 parentId 或没查到 parentComponent 则会将 component 添加到根
