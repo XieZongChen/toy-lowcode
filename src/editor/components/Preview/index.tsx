@@ -1,4 +1,5 @@
 import React from 'react';
+import { message } from 'antd';
 import { useComponentConfigStore } from '@/editor/stores/component-config';
 import { Component, useComponentsStore } from '@/editor/stores/components';
 
@@ -18,6 +19,12 @@ export function Preview() {
         props[event.name] = () => {
           if (type === 'goToLink' && eventConfig.url) {
             window.location.href = eventConfig.url;
+          } else if (type === 'showMessage' && eventConfig.config) {
+            if (eventConfig.config.type === 'success') {
+              message.success(eventConfig.config.text);
+            } else if (eventConfig.config.type === 'error') {
+              message.error(eventConfig.config.text);
+            }
           }
         };
       }
