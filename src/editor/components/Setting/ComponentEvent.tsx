@@ -1,6 +1,6 @@
 import { Collapse, Input, Select, CollapseProps } from 'antd';
-import { useComponentsStore } from '@/editor/stores/components';
 import { useComponentConfigStore } from '@/editor/stores/component-config';
+import { useComponentsStore } from '@/editor/stores/components';
 
 export function ComponentEvent() {
   const { curComponentId, curComponent, updateComponentProps } =
@@ -8,6 +8,23 @@ export function ComponentEvent() {
   const { componentConfig } = useComponentConfigStore();
 
   if (!curComponent) return null;
+
+  function selectAction(eventName: string, value: string) {
+    if (!curComponentId) return;
+
+    updateComponentProps(curComponentId, { [eventName]: { type: value } });
+  }
+
+  function urlChange(eventName: string, value: string) {
+    if (!curComponentId) return;
+
+    updateComponentProps(curComponentId, {
+      [eventName]: {
+        ...curComponent?.props?.[eventName],
+        url: value,
+      },
+    });
+  }
 
   const items: CollapseProps['items'] = (
     componentConfig[curComponent.name].events || []
@@ -25,9 +42,27 @@ export function ComponentEvent() {
                 { label: '显示提示', value: 'showMessage' },
                 { label: '跳转链接', value: 'goToLink' },
               ]}
+              onChange={(value) => {
+                selectAction(event.name, value);
+              }}
               value={curComponent?.props?.[event.name]?.type}
             />
           </div>
+          {curComponent?.props?.[event.name]?.type === 'goToLink' && (
+            <div className='mt-[10px]'>
+              <div className='flex items-center gap-[10px]'>
+                <div>链接</div>
+                <div>
+                  <Input
+                    onChange={(e) => {
+                      urlChange(event.name, e.target.value);
+                    }}
+                    value={curComponent?.props?.[event.name]?.url}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ),
     };
