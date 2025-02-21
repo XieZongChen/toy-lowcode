@@ -5,7 +5,7 @@ import { Header } from './components/Header';
 import { EditArea } from './components/EditArea';
 import { Setting } from './components/Setting';
 import { MaterialWrapper } from './components/MaterialWrapper';
-import { Preview } from './components/Prview';
+import { Preview } from './components/Preview';
 
 export default function ReactPlayground() {
   const { mode } = useComponentsStore();
