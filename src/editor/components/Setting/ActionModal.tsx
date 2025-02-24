@@ -17,6 +17,11 @@ export function ActionModal(props: ActionModalProps) {
     GoToLinkConfig | ShowMessageConfig
   >();
 
+  const initModal = () => {
+    setKey('访问链接');
+    setCurConfig(undefined);
+  };
+
   return (
     <Modal
       title='事件动作配置'
@@ -24,8 +29,15 @@ export function ActionModal(props: ActionModalProps) {
       open={visible}
       okText='确认'
       cancelText='取消'
-      onOk={() => handleOk(curConfig)}
-      onCancel={handleCancel}
+      destroyOnClose
+      onOk={() => {
+        handleOk(curConfig);
+        initModal();
+      }}
+      onCancel={() => {
+        handleCancel();
+        initModal();
+      }}
     >
       <div className='h-[500px]'>
         <Segmented
