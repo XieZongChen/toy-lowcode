@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Collapse, CollapseProps, Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { useComponentConfigStore } from '@/editor/stores/component-config';
 import type { ComponentEvent } from '@/editor/stores/component-config';
 import { useComponentsStore } from '@/editor/stores/components';
@@ -14,6 +15,22 @@ export function ComponentEvent() {
   const [curEvent, setCurEvent] = useState<ComponentEvent>();
 
   if (!curComponent) return null;
+
+  function deleteAction(event: ComponentEvent, index: number) {
+    if (!curComponent) {
+      return;
+    }
+
+    const actions = curComponent.props[event.name]?.actions;
+
+    actions.splice(index, 1);
+
+    updateComponentProps(curComponent.id, {
+      [event.name]: {
+        actions: actions,
+      },
+    });
+  }
 
   const items: CollapseProps['items'] = (
     componentConfig[curComponent.name].events || []
@@ -39,20 +56,42 @@ export function ComponentEvent() {
       children: (
         <div>
           {(curComponent.props[event.name]?.actions || []).map(
-            (item: GoToLinkConfig | ShowMessageConfig, idx: number) => {
+            (item: GoToLinkConfig | ShowMessageConfig, index: number) => {
               return (
-                <div key={idx}>
+                <div key={index}>
                   {item.type === 'goToLink' ? (
-                    <div className='border border-[#aaa] m-[10px] p-[10px]'>
+                    <div className='border border-[#aaa] m-[10px] p-[10px] relative'>
                       <div className='text-[blue]'>跳转链接</div>
                       <div>{item.url}</div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 10,
+                          right: 10,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => deleteAction(event, index)}
+                      >
+                        <DeleteOutlined />
+                      </div>
                     </div>
                   ) : null}
                   {item.type === 'showMessage' ? (
-                    <div className='border border-[#aaa] m-[10px] p-[10px]'>
+                    <div className='border border-[#aaa] m-[10px] p-[10px] relative'>
                       <div className='text-[blue]'>消息弹窗</div>
                       <div>{item.config.type}</div>
                       <div>{item.config.text}</div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 10,
+                          right: 10,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => deleteAction(event, index)}
+                      >
+                        <DeleteOutlined />
+                      </div>
                     </div>
                   ) : null}
                 </div>
