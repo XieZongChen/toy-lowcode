@@ -25,7 +25,9 @@ export function ComponentEvent() {
           {event.label}
           <Button
             type='primary'
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
+
               setCurEvent(event);
               setActionModalOpen(true);
             }}
@@ -34,7 +36,31 @@ export function ComponentEvent() {
           </Button>
         </div>
       ),
-      children: <div></div>,
+      children: (
+        <div>
+          {(curComponent.props[event.name]?.actions || []).map(
+            (item: GoToLinkConfig | ShowMessageConfig) => {
+              return (
+                <div>
+                  {item.type === 'goToLink' ? (
+                    <div className='border border-[#aaa] m-[10px] p-[10px]'>
+                      <div className='text-[blue]'>跳转链接</div>
+                      <div>{item.url}</div>
+                    </div>
+                  ) : null}
+                  {item.type === 'showMessage' ? (
+                    <div className='border border-[#aaa] m-[10px] p-[10px]'>
+                      <div className='text-[blue]'>消息弹窗</div>
+                      <div>{item.config.type}</div>
+                      <div>{item.config.text}</div>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
+          )}
+        </div>
+      ),
     };
   });
 
@@ -57,7 +83,13 @@ export function ComponentEvent() {
 
   return (
     <div className='px-[10px]'>
-      <Collapse className='mb-[10px]' items={items} />
+      <Collapse
+        className='mb-[10px]'
+        items={items}
+        defaultActiveKey={componentConfig[curComponent.name].events?.map(
+          (item) => item.name
+        )}
+      />
       <ActionModal
         visible={actionModalOpen}
         handleOk={handleModalOk}
