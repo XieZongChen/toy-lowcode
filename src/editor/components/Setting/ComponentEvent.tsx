@@ -39,9 +39,9 @@ export function ComponentEvent() {
       children: (
         <div>
           {(curComponent.props[event.name]?.actions || []).map(
-            (item: GoToLinkConfig | ShowMessageConfig) => {
+            (item: GoToLinkConfig | ShowMessageConfig, idx: number) => {
               return (
-                <div>
+                <div key={idx}>
                   {item.type === 'goToLink' ? (
                     <div className='border border-[#aaa] m-[10px] p-[10px]'>
                       <div className='text-[blue]'>跳转链接</div>
