@@ -1,29 +1,30 @@
 import { Modal, Segmented } from 'antd';
 import { useState } from 'react';
-import { ComponentEvent } from '@/editor/stores/component-config';
-import { GoToLink } from './actions/GoToLink';
-import { ShowMessage } from './actions/ShowMessage';
+import { GoToLink, GoToLinkConfig } from './actions/GoToLink';
+import { ShowMessage, ShowMessageConfig } from './actions/ShowMessage';
 
 interface ActionModalProps {
   visible: boolean;
-  eventConfig: ComponentEvent;
-  handleOk: () => void;
+  handleOk: (config?: GoToLinkConfig | ShowMessageConfig) => void;
   handleCancel: () => void;
 }
 
 export function ActionModal(props: ActionModalProps) {
-  const { visible, handleOk, eventConfig, handleCancel } = props;
+  const { visible, handleOk, handleCancel } = props;
 
   const [key, setKey] = useState<string>('访问链接');
+  const [curConfig, setCurConfig] = useState<
+    GoToLinkConfig | ShowMessageConfig
+  >();
 
   return (
     <Modal
       title='事件动作配置'
       width={800}
       open={visible}
-      okText='添加'
+      okText='确认'
       cancelText='取消'
-      onOk={handleOk}
+      onOk={() => handleOk(curConfig)}
       onCancel={handleCancel}
     >
       <div className='h-[500px]'>
@@ -36,14 +37,14 @@ export function ActionModal(props: ActionModalProps) {
         {key === '访问链接' && (
           <GoToLink
             onChange={(config) => {
-              console.log(config);
+              setCurConfig(config);
             }}
           />
         )}
         {key === '消息提示' && (
           <ShowMessage
             onChange={(config) => {
-              console.log(config);
+              setCurConfig(config);
             }}
           />
         )}
