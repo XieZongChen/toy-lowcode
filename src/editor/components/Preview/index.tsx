@@ -26,8 +26,17 @@ export function Preview() {
                 message.error(action.config.text);
               }
             } else if (action.type === 'customJS') {
-              const func = new Function(action.code);
-              func();
+              // new Function 可以传入任意个参数，最后一个是函数体，前面都会作为函数参数的名字
+              const func = new Function('context', action.code);
+              // 调用的时候传入参数
+              // 在 code 中使用 context.name 即可拿到此处传入的 component.name
+              func({
+                name: component.name,
+                props: component.props,
+                showMessage(content: string) {
+                  message.success(content);
+                },
+              });
             }
           });
         };
