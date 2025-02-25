@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Collapse, CollapseProps, Button } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useComponentConfigStore } from '@/editor/stores/component-config';
 import type { ComponentEvent } from '@/editor/stores/component-config';
 import { useComponentsStore } from '@/editor/stores/components';
@@ -13,6 +13,14 @@ export function ComponentEvent() {
   const [curEvent, setCurEvent] = useState<ComponentEvent>();
 
   if (!curComponent) return null;
+
+  function editAction(config: ActionConfig) {
+    if (!curComponent) {
+      return;
+    }
+
+    setActionModalOpen(true);
+  }
 
   function deleteAction(event: ComponentEvent, index: number) {
     if (!curComponent) {
@@ -65,6 +73,17 @@ export function ComponentEvent() {
                         style={{
                           position: 'absolute',
                           top: 10,
+                          right: 30,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => editAction(item)}
+                      >
+                        <EditOutlined />
+                      </div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 10,
                           right: 10,
                           cursor: 'pointer',
                         }}
@@ -79,6 +98,17 @@ export function ComponentEvent() {
                       <div className='text-[blue]'>消息弹窗</div>
                       <div>{item.config.type}</div>
                       <div>{item.config.text}</div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 10,
+                          right: 30,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => editAction(item)}
+                      >
+                        <EditOutlined />
+                      </div>
                       <div
                         style={{
                           position: 'absolute',
@@ -98,6 +128,17 @@ export function ComponentEvent() {
                       className='border border-[#aaa] m-[10px] p-[10px] relative'
                     >
                       <div className='text-[blue]'>自定义 JS</div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 10,
+                          right: 30,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => editAction(item)}
+                      >
+                        <EditOutlined />
+                      </div>
                       <div
                         style={{
                           position: 'absolute',
