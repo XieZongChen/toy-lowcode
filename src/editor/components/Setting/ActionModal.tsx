@@ -2,10 +2,13 @@ import { Modal, Segmented } from 'antd';
 import { useState } from 'react';
 import { GoToLink, GoToLinkConfig } from './actions/GoToLink';
 import { ShowMessage, ShowMessageConfig } from './actions/ShowMessage';
+import { CustomJS, CustomJSConfig } from './actions/CustomJS';
+
+export type ActionConfig = GoToLinkConfig | ShowMessageConfig | CustomJSConfig;
 
 interface ActionModalProps {
   visible: boolean;
-  handleOk: (config?: GoToLinkConfig | ShowMessageConfig) => void;
+  handleOk: (config?: ActionConfig) => void;
   handleCancel: () => void;
 }
 
@@ -13,9 +16,7 @@ export function ActionModal(props: ActionModalProps) {
   const { visible, handleOk, handleCancel } = props;
 
   const [key, setKey] = useState<string>('访问链接');
-  const [curConfig, setCurConfig] = useState<
-    GoToLinkConfig | ShowMessageConfig
-  >();
+  const [curConfig, setCurConfig] = useState<ActionConfig>();
 
   const initModal = () => {
     setKey('访问链接');
@@ -55,6 +56,13 @@ export function ActionModal(props: ActionModalProps) {
         )}
         {key === '消息提示' && (
           <ShowMessage
+            onChange={(config) => {
+              setCurConfig(config);
+            }}
+          />
+        )}
+        {key === '自定义 JS' && (
+          <CustomJS
             onChange={(config) => {
               setCurConfig(config);
             }}
