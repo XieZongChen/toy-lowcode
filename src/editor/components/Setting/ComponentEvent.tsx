@@ -12,15 +12,17 @@ export function ComponentEvent() {
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [curEvent, setCurEvent] = useState<ComponentEvent>();
   const [curAction, setCurAction] = useState<ActionConfig>();
+  const [curActionIndex, setCurActionIndex] = useState<number>();
 
   if (!curComponent) return null;
 
-  function editAction(config: ActionConfig) {
+  function editAction(config: ActionConfig, index: number) {
     if (!curComponent) {
       return;
     }
 
     setCurAction(config);
+    setCurActionIndex(index);
     setActionModalOpen(true);
   }
 
@@ -78,7 +80,7 @@ export function ComponentEvent() {
                           right: 30,
                           cursor: 'pointer',
                         }}
-                        onClick={() => editAction(item)}
+                        onClick={() => editAction(item, index)}
                       >
                         <EditOutlined />
                       </div>
@@ -107,7 +109,7 @@ export function ComponentEvent() {
                           right: 30,
                           cursor: 'pointer',
                         }}
-                        onClick={() => editAction(item)}
+                        onClick={() => editAction(item, index)}
                       >
                         <EditOutlined />
                       </div>
@@ -137,7 +139,7 @@ export function ComponentEvent() {
                           right: 30,
                           cursor: 'pointer',
                         }}
-                        onClick={() => editAction(item)}
+                        onClick={() => editAction(item, index)}
                       >
                         <EditOutlined />
                       </div>
@@ -168,15 +170,28 @@ export function ComponentEvent() {
       return;
     }
 
-    updateComponentProps(curComponent.id, {
-      [curEvent.name]: {
-        actions: [
-          ...(curComponent.props[curEvent.name]?.actions || []),
-          config,
-        ],
-      },
-    });
+    if (curAction) {
+      updateComponentProps(curComponent.id, {
+        [curEvent.name]: {
+          actions: curComponent.props[curEvent.name]?.actions.map(
+            (item: ActionConfig, index: number) => {
+              return index === curActionIndex ? config : item;
+            }
+          ),
+        },
+      });
+    } else {
+      updateComponentProps(curComponent.id, {
+        [curEvent.name]: {
+          actions: [
+            ...(curComponent.props[curEvent.name]?.actions || []),
+            config,
+          ],
+        },
+      });
+    }
 
+    setCurAction(undefined);
     setActionModalOpen(false);
   }
 
