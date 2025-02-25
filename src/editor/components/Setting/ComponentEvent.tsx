@@ -11,6 +11,7 @@ export function ComponentEvent() {
   const { componentConfig } = useComponentConfigStore();
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [curEvent, setCurEvent] = useState<ComponentEvent>();
+  const [curAction, setCurAction] = useState<ActionConfig>();
 
   if (!curComponent) return null;
 
@@ -19,6 +20,7 @@ export function ComponentEvent() {
       return;
     }
 
+    setCurAction(config);
     setActionModalOpen(true);
   }
 
@@ -189,6 +191,7 @@ export function ComponentEvent() {
       />
       <ActionModal
         visible={actionModalOpen}
+        action={curAction}
         handleOk={handleModalOk}
         handleCancel={() => {
           setActionModalOpen(false);
