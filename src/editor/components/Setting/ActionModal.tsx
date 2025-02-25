@@ -63,7 +63,7 @@ export function ActionModal(props: ActionModalProps) {
         {key === '访问链接' && (
           <GoToLink
             key='goToLink'
-            defaultValue={action?.type === 'goToLink' ? action.url : ''}
+            value={action?.type === 'goToLink' ? action.url : ''}
             onChange={(config) => {
               setCurConfig(config);
             }}
@@ -81,7 +81,7 @@ export function ActionModal(props: ActionModalProps) {
         {key === '自定义 JS' && (
           <CustomJS
             key='customJS'
-            defaultValue={action?.type === 'customJS' ? action.code : ''}
+            value={action?.type === 'customJS' ? action.code : ''}
             onChange={(config) => {
               setCurConfig(config);
             }}
