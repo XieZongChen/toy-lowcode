@@ -4,9 +4,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useComponentConfigStore } from '@/editor/stores/component-config';
 import type { ComponentEvent } from '@/editor/stores/component-config';
 import { useComponentsStore } from '@/editor/stores/components';
-import { GoToLinkConfig } from './actions/GoToLink';
-import { ShowMessageConfig } from './actions/ShowMessage';
-import { ActionModal } from './ActionModal';
+import { ActionConfig, ActionModal } from './ActionModal';
 
 export function ComponentEvent() {
   const { curComponent, updateComponentProps } = useComponentsStore();
@@ -56,7 +54,7 @@ export function ComponentEvent() {
       children: (
         <div>
           {(curComponent.props[event.name]?.actions || []).map(
-            (item: GoToLinkConfig | ShowMessageConfig, index: number) => {
+            (item: ActionConfig, index: number) => {
               return (
                 <div key={index}>
                   {item.type === 'goToLink' ? (
@@ -94,6 +92,25 @@ export function ComponentEvent() {
                       </div>
                     </div>
                   ) : null}
+                  {item.type === 'customJS' ? (
+                    <div
+                      key='customJS'
+                      className='border border-[#aaa] m-[10px] p-[10px] relative'
+                    >
+                      <div className='text-[blue]'>自定义 JS</div>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 10,
+                          right: 10,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => deleteAction(event, index)}
+                      >
+                        <DeleteOutlined />
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               );
             }
@@ -103,7 +120,7 @@ export function ComponentEvent() {
     };
   });
 
-  function handleModalOk(config?: GoToLinkConfig | ShowMessageConfig) {
+  function handleModalOk(config?: ActionConfig) {
     if (!config || !curEvent || !curComponent) {
       return;
     }
