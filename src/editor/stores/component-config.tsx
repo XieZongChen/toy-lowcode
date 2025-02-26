@@ -5,6 +5,8 @@ import ButtonDev from '../materials/Button/dev';
 import ButtonProd from '../materials/Button/prod';
 import PageDev from '../materials/Page/dev';
 import PageProd from '../materials/Page/prod';
+import ModalDev from '../materials/Modal/dev';
+import ModalProd from '../materials/Modal/prod';
 
 /**
  * 组件属性设置
@@ -105,6 +107,33 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       defaultProps: {},
       dev: PageDev,
       prod: PageProd,
+    },
+    Modal: {
+      name: 'Modal',
+      desc: '弹窗',
+      defaultProps: {
+        title: '弹窗',
+      },
+      dev: ModalDev,
+      prod: ModalProd,
+      setter: [
+        {
+          name: 'title',
+          label: '标题',
+          type: 'input',
+        },
+      ],
+      stylesSetter: [],
+      events: [
+        {
+          name: 'onOk',
+          label: '确认事件',
+        },
+        {
+          name: 'onCancel',
+          label: '取消事件',
+        },
+      ],
     },
   },
   registerComponent: (name, componentConfig) =>
