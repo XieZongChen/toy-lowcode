@@ -67,7 +67,7 @@ export function ActionModal(props: ActionModalProps) {
           value={key}
           onChange={setKey}
           block
-          options={['访问链接', '消息提示', '自定义 JS']}
+          options={['访问链接', '消息提示', '组件方法', '自定义 JS']}
         />
         {key === '访问链接' && (
           <GoToLink
