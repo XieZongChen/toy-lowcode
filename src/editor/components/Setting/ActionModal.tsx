@@ -78,6 +78,17 @@ export function ActionModal(props: ActionModalProps) {
             }}
           />
         )}
+        {key === '组件方法' && (
+          <ComponentMethod
+            key='showMessage'
+            value={
+              action?.type === 'componentMethod' ? action.config : undefined
+            }
+            onChange={(config) => {
+              setCurConfig(config);
+            }}
+          />
+        )}
         {key === '自定义 JS' && (
           <CustomJS
             key='customJS'
