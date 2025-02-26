@@ -16,20 +16,48 @@ export interface ComponentMethodConfig {
 }
 
 export interface ComponentMethodProps {
-  value?: string;
+  value?: ComponentMethodConfig['config'];
   onChange?: (config: ComponentMethodConfig) => void;
 }
 
 export function ComponentMethod(props: ComponentMethodProps) {
+  const { value, onChange } = props;
   const { components, curComponentId } = useComponentsStore();
   const { componentConfig } = useComponentConfigStore();
   const [selectedComponent, setSelectedComponent] =
     useState<Component | null>();
 
+  const [curId, setCurId] = useState<number>();
+  const [curMethod, setCurMethod] = useState<string>();
+
+  useEffect(() => {
+    if (value) {
+      setCurId(value.componentId);
+      setCurMethod(value.method);
+
+      setSelectedComponent(getComponentById(value.componentId, components));
+    }
+  }, [value]);
+
   function componentChange(value: number) {
     if (!curComponentId) return;
 
+    setCurId(value);
     setSelectedComponent(getComponentById(value, components));
+  }
+
+  function componentMethodChange(value: string) {
+    if (!curComponentId || !selectedComponent) return;
+
+    setCurMethod(value);
+
+    onChange?.({
+      type: 'componentMethod',
+      config: {
+        componentId: selectedComponent?.id,
+        method: value,
+      },
+    });
   }
 
   return (
@@ -44,6 +72,7 @@ export function ComponentMethod(props: ComponentMethodProps) {
               label: 'name',
               value: 'id',
             }}
+            value={curId}
             onChange={(value) => {
               componentChange(value);
             }}
@@ -62,7 +91,10 @@ export function ComponentMethod(props: ComponentMethodProps) {
                 label: method.label,
                 value: method.name,
               }))}
-              onChange={(value) => {}}
+              value={curMethod}
+              onChange={(value) => {
+                componentMethodChange(value);
+              }}
             />
           </div>
         </div>
