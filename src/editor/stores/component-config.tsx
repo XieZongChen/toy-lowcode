@@ -23,6 +23,11 @@ export interface ComponentEvent {
   label: string;
 }
 
+export interface ComponentMethod {
+  name: string;
+  label: string;
+}
+
 export interface ComponentConfig {
   name: string;
   defaultProps: Record<string, any>; // 组件默认参数
@@ -30,6 +35,7 @@ export interface ComponentConfig {
   setter?: ComponentSetter[];
   stylesSetter?: ComponentSetter[];
   events?: ComponentEvent[];
+  methods?: ComponentMethod[];
   dev: any;
   prod: any;
 }
@@ -132,6 +138,16 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
         {
           name: 'onCancel',
           label: '取消事件',
+        },
+      ],
+      methods: [
+        {
+          name: 'open',
+          label: '打开弹窗',
+        },
+        {
+          name: 'close',
+          label: '关闭弹窗',
         },
       ],
     },
