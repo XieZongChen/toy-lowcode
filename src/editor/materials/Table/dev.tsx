@@ -23,6 +23,11 @@ function Table({ id, name, children, styles }: CommonComponentProps) {
     drag(divRef);
   }, []);
 
+  /**
+   * 为了方便低代码配置，列是作为拖拽物料添加进列表的，
+   * 所以当用户拖拽 TableColumn 物料到 Table 物料内时，
+   * children 会发生变化，用 React.Children 遍历，把它变为 columns 配置
+   */
   const columns = useMemo(() => {
     return React.Children.map(children, (item: any) => {
       return {
