@@ -6,7 +6,10 @@ import { useMaterialDrop } from '@/editor/hooks/useMaterialDrop';
 const Container = ({ id, name, children, styles }: CommonComponentProps) => {
   const divRef = useRef<HTMLDivElement>(null);
 
-  const { canDrop, drop } = useMaterialDrop(['Button', 'Container'], id);
+  const { canDrop, drop } = useMaterialDrop(
+    ['Button', 'Container', 'Table'],
+    id
+  );
 
   const [_, drag] = useDrag({
     type: name,
