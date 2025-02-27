@@ -8,6 +8,7 @@ import PageProd from '../materials/Page/prod';
 import ModalDev from '../materials/Modal/dev';
 import ModalProd from '../materials/Modal/prod';
 import TableDev from '../materials/Table/dev';
+import TableProd from '../materials/Table/prod';
 import TableColumnDev from '../materials/TableColumn/dev';
 import TableColumnProd from '../materials/TableColumn/prod';
 
@@ -166,7 +167,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
         },
       ],
       dev: TableDev,
-      prod: <></>,
+      prod: TableProd,
     },
     TableColumn: {
       name: 'TableColumn',
