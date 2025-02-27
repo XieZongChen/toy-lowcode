@@ -7,6 +7,7 @@ import PageDev from '../materials/Page/dev';
 import PageProd from '../materials/Page/prod';
 import ModalDev from '../materials/Modal/dev';
 import ModalProd from '../materials/Modal/prod';
+import TableDev from '../materials/Table/dev';
 
 /**
  * 组件属性设置
@@ -150,6 +151,20 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           label: '关闭弹窗',
         },
       ],
+    },
+    Table: {
+      name: 'Table',
+      defaultProps: {},
+      desc: '表格',
+      setter: [
+        {
+          name: 'url',
+          label: 'url',
+          type: 'input',
+        },
+      ],
+      dev: TableDev,
+      prod: <></>,
     },
   },
   registerComponent: (name, componentConfig) =>
