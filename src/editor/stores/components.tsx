@@ -143,6 +143,11 @@ const creator: StateCreator<State & Action> = (set, get) => ({
 export const useComponentsStore = create<State & Action>()(
   persist(creator, {
     name: 'toy-lowcode',
+    partialize: (state) => {
+      // 过滤掉 curComponentId，让 SelectedMask 重新渲染，避免 SelectedMask 中的 querySelector 获取不到目标 dom
+      const { curComponentId, ...restState } = state;
+      return restState;
+    },
   })
 );
 
