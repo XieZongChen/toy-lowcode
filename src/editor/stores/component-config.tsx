@@ -12,6 +12,7 @@ import TableProd from '../materials/Table/prod';
 import TableColumnDev from '../materials/TableColumn/dev';
 import TableColumnProd from '../materials/TableColumn/prod';
 import FormDev from '../materials/Form/dev';
+import FormProd from '../materials/Form/prod';
 import FormItemDev from '../materials/FormItem/dev';
 import FormItemProd from '../materials/FormItem/prod';
 
@@ -227,7 +228,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
         },
       ],
       dev: FormDev,
-      prod: <></>,
+      prod: FormProd,
     },
     FormItem: {
       name: 'FormItem',
