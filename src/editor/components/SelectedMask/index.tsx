@@ -114,6 +114,7 @@ function SelectedMask({
     return parentComponents;
   }, [curComponent]);
 
+
   return createPortal(
     <>
       <div

@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react';
-import { create } from 'zustand';
+import { create, StateCreator } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 /**
  * low code json 项，整个 json 是由一个个项组成的树形结构
@@ -34,7 +35,7 @@ interface Action {
   setMode: (mode: State['mode']) => void;
 }
 
-export const useComponentsStore = create<State & Action>((set, get) => ({
+const creator: StateCreator<State & Action> = (set, get) => ({
   components: [
     {
       id: 1,
@@ -137,7 +138,13 @@ export const useComponentsStore = create<State & Action>((set, get) => ({
 
       return { components: [...state.components] };
     }),
-}));
+});
+
+export const useComponentsStore = create<State & Action>()(
+  persist(creator, {
+    name: 'toy-lowcode',
+  })
+);
 
 /**
  * 找到 components 中 id 的父级 component
