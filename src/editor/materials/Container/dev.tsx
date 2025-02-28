@@ -7,7 +7,7 @@ const Container = ({ id, name, children, styles }: CommonComponentProps) => {
   const divRef = useRef<HTMLDivElement>(null);
 
   const { canDrop, drop } = useMaterialDrop(
-    ['Button', 'Container', 'Table'],
+    ['Button', 'Container', 'Table', 'Form'],
     id
   );
 

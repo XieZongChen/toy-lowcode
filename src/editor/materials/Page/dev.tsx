@@ -3,7 +3,7 @@ import { useMaterialDrop } from '@/editor/hooks/useMaterialDrop';
 
 function Page({ id, name, children, styles }: CommonComponentProps) {
   const { canDrop, drop } = useMaterialDrop(
-    ['Button', 'Container', 'Modal', 'Table'],
+    ['Button', 'Container', 'Modal', 'Table', 'Form'],
     id
   );
 
