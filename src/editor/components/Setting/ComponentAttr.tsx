@@ -15,7 +15,9 @@ export function ComponentAttr() {
   const { componentConfig } = useComponentConfigStore();
 
   useEffect(() => {
-    // 回显设置
+    // 先重置
+    form.resetFields();
+    // 再回显设置
     const data = form.getFieldsValue();
     form.setFieldsValue({ ...data, ...curComponent?.props });
   }, [curComponent]);
