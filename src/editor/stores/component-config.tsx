@@ -11,6 +11,7 @@ import TableDev from '../materials/Table/dev';
 import TableProd from '../materials/Table/prod';
 import TableColumnDev from '../materials/TableColumn/dev';
 import TableColumnProd from '../materials/TableColumn/prod';
+import FormDev from '../materials/Form/dev';
 
 /**
  * 组件属性设置
@@ -205,6 +206,26 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
       ],
       dev: TableColumnDev,
       prod: TableColumnProd,
+    },
+    Form: {
+      name: 'Form',
+      defaultProps: {},
+      desc: '表单',
+      setter: [
+        {
+          name: 'title',
+          label: '标题',
+          type: 'input',
+        },
+      ],
+      events: [
+        {
+          name: 'onFinish',
+          label: '提交事件',
+        },
+      ],
+      dev: FormDev,
+      prod: <></>,
     },
   },
   registerComponent: (name, componentConfig) =>
