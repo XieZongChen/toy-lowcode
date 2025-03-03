@@ -38,7 +38,7 @@ export interface ComponentMethod {
 
 export interface ComponentConfig {
   name: string;
-  defaultProps: Record<string, any>; // 组件默认参数
+  defaultProps: (initValue?: Record<string, any>) => Record<string, any>; // 组件默认参数
   desc: string; // 组件描述
   setter?: ComponentSetter[];
   stylesSetter?: ComponentSetter[];
@@ -62,17 +62,18 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     Container: {
       name: 'Container',
       desc: '容器',
-      defaultProps: {},
+      defaultProps: () => ({}),
       dev: ContainerDev,
       prod: ContainerProd,
     },
     Button: {
       name: 'Button',
       desc: '按钮',
-      defaultProps: {
+      defaultProps: (init = {}) => ({
         type: 'primary',
         text: '按钮',
-      },
+        ...init,
+      }),
       dev: ButtonDev,
       prod: ButtonProd,
       setter: [
@@ -118,16 +119,17 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     Page: {
       name: 'Page',
       desc: '页面',
-      defaultProps: {},
+      defaultProps: () => ({}),
       dev: PageDev,
       prod: PageProd,
     },
     Modal: {
       name: 'Modal',
       desc: '弹窗',
-      defaultProps: {
+      defaultProps: (init = {}) => ({
         title: '弹窗',
-      },
+        ...init,
+      }),
       dev: ModalDev,
       prod: ModalProd,
       setter: [
@@ -161,7 +163,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     },
     Table: {
       name: 'Table',
-      defaultProps: {},
+      defaultProps: () => ({}),
       desc: '表格',
       setter: [
         {
@@ -176,10 +178,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     TableColumn: {
       name: 'TableColumn',
       desc: '表格列',
-      defaultProps: {
+      defaultProps: (init = {}) => ({
         dataIndex: `col_${new Date().getTime()}`,
         title: '列名',
-      },
+        ...init,
+      }),
       setter: [
         {
           name: 'type',
@@ -212,7 +215,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     },
     Form: {
       name: 'Form',
-      defaultProps: {},
+      defaultProps: () => ({}),
       desc: '表单',
       setter: [
         {
@@ -239,10 +242,11 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     FormItem: {
       name: 'FormItem',
       desc: '表单项',
-      defaultProps: {
+      defaultProps: (init = {}) => ({
         name: new Date().getTime(),
         label: '姓名',
-      },
+        ...init,
+      }),
       setter: [
         {
           name: 'type',
