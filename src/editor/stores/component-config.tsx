@@ -38,7 +38,7 @@ export interface ComponentMethod {
 
 export interface ComponentConfig {
   name: string;
-  defaultProps: (initValue?: Record<string, any>) => Record<string, any>; // 组件默认参数
+  getDefaultProps: (initValue?: Record<string, any>) => Record<string, any>; // 组件默认参数
   desc: string; // 组件描述
   setter?: ComponentSetter[];
   stylesSetter?: ComponentSetter[];
@@ -62,14 +62,14 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     Container: {
       name: 'Container',
       desc: '容器',
-      defaultProps: () => ({}),
+      getDefaultProps: () => ({}),
       dev: ContainerDev,
       prod: ContainerProd,
     },
     Button: {
       name: 'Button',
       desc: '按钮',
-      defaultProps: (init = {}) => ({
+      getDefaultProps: (init = {}) => ({
         type: 'primary',
         text: '按钮',
         ...init,
@@ -119,14 +119,14 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     Page: {
       name: 'Page',
       desc: '页面',
-      defaultProps: () => ({}),
+      getDefaultProps: () => ({}),
       dev: PageDev,
       prod: PageProd,
     },
     Modal: {
       name: 'Modal',
       desc: '弹窗',
-      defaultProps: (init = {}) => ({
+      getDefaultProps: (init = {}) => ({
         title: '弹窗',
         ...init,
       }),
@@ -163,7 +163,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     },
     Table: {
       name: 'Table',
-      defaultProps: () => ({}),
+      getDefaultProps: () => ({}),
       desc: '表格',
       setter: [
         {
@@ -178,7 +178,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     TableColumn: {
       name: 'TableColumn',
       desc: '表格列',
-      defaultProps: (init = {}) => ({
+      getDefaultProps: (init = {}) => ({
         dataIndex: `col_${new Date().getTime()}`,
         title: '列名',
         ...init,
@@ -215,7 +215,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     },
     Form: {
       name: 'Form',
-      defaultProps: () => ({}),
+      getDefaultProps: () => ({}),
       desc: '表单',
       setter: [
         {
@@ -242,7 +242,7 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
     FormItem: {
       name: 'FormItem',
       desc: '表单项',
-      defaultProps: (init = {}) => ({
+      getDefaultProps: (init = {}) => ({
         name: new Date().getTime(),
         label: '姓名',
         ...init,

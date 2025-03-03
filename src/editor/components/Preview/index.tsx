@@ -75,7 +75,7 @@ export function Preview() {
           ref: (ref: Record<string, any>) => {
             componentRefs.current[component.id] = ref;
           },
-          ...config.defaultProps(),
+          ...config.getDefaultProps(),
           ...component.props,
           ...handleEvent(component),
         },
