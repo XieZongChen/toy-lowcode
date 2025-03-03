@@ -24,7 +24,7 @@ export function EditArea() {
           id: component.id,
           name: component.name,
           styles: component.styles,
-          ...config.defaultProps,
+          ...config.defaultProps(),
           ...component.props,
         },
         // components 是一个树形结构，这里要递归渲染 children
